@@ -97,18 +97,6 @@ type ZParam          = 'expenses' | 'balance';
 type InvParam        = 'stocks' | 'mutual_funds' | 'fd' | 'gold';
 type ThreeDChartType = 'bar' | 'scatter' | 'surface';
 
-// ═══════════════════════════════════════════════════════════════════════════════
-//  ISOMETRIC 3-D ENGINE
-//  Axes: X = time index, Y = income, Z = zParam (expenses/balance)
-//  Uses a standard isometric projection so all three axes are visible.
-// ═══════════════════════════════════════════════════════════════════════════════
-
-// Cabinet/oblique projection — tuned so all 3 axes stay inside the viewbox.
-// Camera looks from slightly above-right.
-//   X (time)    → goes right across the screen
-//   Y (income)  → goes straight up
-//   Z (z-param) → goes up-left at ~35deg (the "depth" axis, into screen)
-// With origin pushed right and Z scale kept small this stays fully on-screen.
 const ISO = {
   ux: [1, 0],          // X → right
   uy: [0, -1],         // Y → up
@@ -161,22 +149,6 @@ interface ThreeDProps {
 function ThreeDChart({ type, data, zParam, darkMode }: ThreeDProps) {
   const [hovered, setHovered] = useState<number | null>(null);
 
-  // ── Layout ────────────────────────────────────────────────────────────────
-  // Cabinet oblique projection.
-  // Income (Y) axis is placed at the FAR-RIGHT end of Time (wx=1),
-  // so it doesn't overlap the Z-axis or bars on the left.
-  //
-  //   X (time)   → right along the floor   [1,  0   ]
-  //   Y (income) → straight up             [0, -1   ]  — drawn at wx=1
-  //   Z (depth)  → upper-left into screen  [-0.5, -0.35]  — drawn at wx=0
-  //
-  // Canvas shrunk: W=620, H=360 to reduce tile size.
-  // Origin at bottom-left of the floor box.
-  // Verified corners (all inside 620×360):
-  //   floor far-right (1,0,0)  = ox+sx           = 120+340 = 460
-  //   floor back-left (0,0,1)  = ox-sz*0.5       = 120-52  =  68
-  //   top-right       (1,1,0)  = (460, oy-sy)    = (460,220)
-  //   top-back        (0,1,1)  = (68,  oy-sy-sz*0.35)=(68,182)
   const W = 620, H = 360;
   const ox = 120, oy = 320;  // bottom-left origin
   const sx = 470;            // X (time) scale
