@@ -100,7 +100,7 @@ type ThreeDChartType = 'bar' | 'scatter' | 'surface';
 const ISO = {
   ux: [1, 0],          // X → right
   uy: [0, -1],         // Y → up
-  uz: [-0.75, -0.35],   // Z → more horizontal, less vertical
+  uz: [-0.75, -0.35],   
 };
 
 function project(wx: number, wy: number, wz: number, scale: {x:number; y:number; z:number}, origin: {x:number; y:number}) {
@@ -152,7 +152,7 @@ function ThreeDChart({ type, data, zParam, darkMode }: ThreeDProps) {
   const W = 620, H = 360;
   const ox = 120, oy = 320;  // bottom-left origin
   const sx = 470;            // X (time) scale
-  const sy = 220;            // Y (income) scale  — shorter bars
+  const sy = 220;            // Y (income) scale  
   const sz = 150;            // Z (depth) scale
 
   // Cabinet unit vectors
@@ -488,9 +488,9 @@ export default function Dashboard() {
   const [lineParam,  setLineParam]  = useState<LineParam>('balance');
   const [invParam,   setInvParam]   = useState<InvParam>('stocks');
   const [chartType,  setChartType]  = useState<'line'|'area'>('area');
-  const [threeDType, setThreeDType] = useState<ThreeDChartType>('bar');
+  const [threeDType, setThreeDType] = useState<ThreeDChartType>('surface');
   const [zParam,     setZParam]     = useState<ZParam>('expenses');
-  const [threeDRange, setThreeDRange] = useState<'week'|'month'>('month');
+  const [threeDRange, setThreeDRange] = useState<'week'|'month'>('week');
 
   const trendData = useMemo(() => {
     if (timeRange === 'week') return WEEKLY_DATA;
